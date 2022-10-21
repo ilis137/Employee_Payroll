@@ -60,4 +60,15 @@ public class NIOFileAPITest {
         Files.newDirectoryStream(playPath , path -> path.toFile().isFile() && path.toString().startsWith("temp"))
                 .forEach(System.out::println);
     }
+
+
+    //watch files
+    @Test
+    public void givenADirectoryWhenWatchedListsAllTheActivities() throws IOException {
+        Path dir = Paths.get(HOME + "/" + PLAY_WITH_NIO);
+        Files.list(dir).filter(Files::isRegularFile).forEach(System.out::println);
+        new Java8WatchService(dir).processEvents();
+        Path newFile=Paths.get(HOME+"/"+PLAY_WITH_NIO+"/test");
+        Assert.assertTrue(Files.exists(newFile));
+    }
 }
