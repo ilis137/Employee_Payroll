@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class EmployeePayrollService {
     private List<Payroll> employeePayrollList;
-
+    public enum IOService {CONSOLE_IO, FILE_IO, DB_IO, REST_IO};
     public EmployeePayrollService() {
         this.employeePayrollList = new ArrayList<Payroll>();
     }
