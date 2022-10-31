@@ -8,7 +8,7 @@ public class EmployeePayrollService {
     private List<Payroll> employeePayrollList;
 
     public enum IOService {
-        CONSOLE_IO, FILE_IO
+        CONSOLE_IO, FILE_IO,DB_IO
     };
 
     public EmployeePayrollService() {
