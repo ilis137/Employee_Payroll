@@ -3,8 +3,13 @@ package com.javapractice;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 public class EmployeePayrollDBService {
   String jdbcURL = "jdbc:mysql://localhost:3306/employee_payroll?useSSl=false";
@@ -39,10 +44,35 @@ public class EmployeePayrollDBService {
     }
   }
 
+  public void readData() {
+    String sql = "select * from employee_payroll; ";
+    List<Payroll> employeePayrollList = new ArrayList<>();
+    try {
+
+      Statement statement = connection.createStatement();
+      ResultSet result = statement.executeQuery(sql);
+      while (result.next()) {
+        int id = result.getInt("id");
+        String name = result.getString("name");
+        double salary = result.getDouble("salary");
+        LocalDate start = result.getDate("start_date").toLocalDate();
+        employeePayrollList.add(new Payroll(id, name, salary, start));
+      }
+    } catch (SQLException exp) {
+      exp.printStackTrace();
+    }
+    employeePayrollList.forEach(payroll -> {
+      System.out.println("id:" + payroll.getId() +
+          " name: " + payroll.getName() +
+          " salary: " + payroll.getSalary() + " start date: " + payroll.getStartDate().toString());
+    });
+  }
+
   public static void main(String[] args) {
-    EmployeePayrollDBService employeePayrollDBService=new EmployeePayrollDBService();
+    EmployeePayrollDBService employeePayrollDBService = new EmployeePayrollDBService();
     employeePayrollDBService.loadDrivers();
     employeePayrollDBService.listDrivers();
     employeePayrollDBService.connectDatabase();
+    employeePayrollDBService.readData();
   }
 }
